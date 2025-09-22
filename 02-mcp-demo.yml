@@ -1,0 +1,53 @@
+#!/usr/bin/env cagent run
+version: "2"
+
+agents:
+  root:
+    # model: ollama_model
+    model: my_github_model
+    description: Assistant to test MCP servers
+    instruction: |
+      You are an AI assistant that can use various tools to help users with their requests.
+    toolsets:
+
+      # Remote MCP Servers
+      # - type: mcp
+      #   remote:
+      #     url: https://mcp.notion.com/sse
+      #     transport_type: sse
+
+      # - type: mcp
+      #   remote:
+      #     url: https://api.githubcopilot.com/mcp/
+      #     transport_type: streameable
+      - type: mcp
+        remote:
+          url: https://gitmcp.io/moby/moby
+          transport_type: streamable
+
+      # Using Docker MCP Gateway
+      - type: mcp
+        ref: docker:github
+      - type: mcp
+        ref: docker:notion
+      - type: mcp
+        ref: docker:fetch
+      - type: mcp
+        ref: docker:time
+        args: ["-e", "LOCAL_TIMEZONE=Europe/Madrid"]
+      
+      # Built-in Tools
+      - type: filesystem
+      - type: shell
+      # - type: think
+      # - type: todo
+
+models:
+  ollama_model:
+    provider: openai
+    model: gemma3:1b
+    base_url: http://localhost:11434/v1
+  my_github_model:
+    provider: openai
+    model: openai/gpt-4.1
+    base_url: https://models.github.ai/inference

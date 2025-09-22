@@ -1,0 +1,5 @@
+.env
+.env.agent
+.DS_Store
+cagent
+*.log
