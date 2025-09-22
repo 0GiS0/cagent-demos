@@ -1,0 +1,170 @@
+#!/usr/bin/env cagent run
+version: "2"
+
+agents:
+  # El agente raíz debe llamarse 'root' para que cagent lo ejecute como punto de entrada.
+  root:
+    model: root_model
+    description: Coordina la generación de títulos de video en español.
+    instruction: |
+      Coordinador para generar títulos de vídeo. 
+      Recibes una DESCRIPCIÓN DEL CONTENIDO del usuario.
+
+      <WORKFLOW>
+      1. Analiza la descripción y extrae solo los conceptos principales (tecnologías, temas, objetivos).
+      2. Usa transfer_to_agent para pasar al `investigador` únicamente los términos clave extraídos (3‑5 palabras neutras). No incluyas la raíz de ninguna ruta ni información irrelevante.
+      3. Cuando recibas los resultados, usa transfer_to_agent para enviar al `generador_titulo` los términos clave y la descripción original completa.
+      4. Entrega la propuesta de título al usuario.
+      </WORKFLOW>
+
+      IMPORTANTE: 
+      - Al llamar al investigador, NO pases la descripción completa. Solo envía términos clave simples como nombres de tecnologías, conceptos o temas.
+      - Al llamar al generador de títulos, envía tanto la descripción completa como los términos clave, los ganchos comunes detectados y los títulos encontrados por el investigador.
+      - No menciones marcas de plataformas de vídeo ni expresiones que sugieran búsquedas en las tareas que asignes.
+      - Usa solo los términos clave técnicos extraídos de la descripción.
+      - Usa la herramienta transfer_to_agent una vez por cada llamada. No generes títulos tú mismo.
+
+      La respuesta final debe tener este formato EXACTO (sin explicaciones):
+
+      TITULO RECOMENDADO: <titulo>
+
+    sub_agents:
+      - researcher
+      - title_generator
+    # toolsets:
+    #   - type: think
+
+  researcher:
+    model: investigator_model
+    description: Busca vídeos relacionados para obtener ideas.
+    instruction: |
+      Recibes únicamente términos clave técnicos simples del coordinador y tu tarea es buscar contenido similar con la herramienta search_video. No generes contenido por tu cuenta ni pidas información adicional.
+
+      Proceso:
+      1. Usa los términos recibidos para realizar una búsqueda con search_video.
+      2. Si no aparecen resultados, repite la búsqueda usando cada término por separado.
+      3. Si tras probar todos los términos no hay resultados, indica que no se encontraron contenidos similares.
+      4. Si encuentras contenido relevante, proporciona únicamente los títulos encontrados para referencia (sin descripciones ni enlaces).
+
+      IMPORTANTE:
+      - Solo recibirás términos clave simples (por ejemplo: "Docker", "YAML", "agentes"); nunca habrá descripciones largas.
+      - No incluyas el nombre de ninguna plataforma ni expresiones que impliquen hacer una búsqueda en tu respuesta.
+
+      Formato de respuesta con resultados:
+      TÉRMINOS CLAVE: [lista de términos usados]
+      TÍTULOS ENCONTRADOS:
+      - [título 1]
+      - [título 2]
+      - …
+
+      Formato de respuesta sin resultados:
+      TÉRMINOS CLAVE: [lista de términos usados]
+      TÍTULOS ENCONTRADOS: []
+
+    toolsets:
+      - type: mcp
+        command: "docker"
+        args: [
+          "run",
+          "-i",
+          "--rm",
+          "-e", "YOUTUBE_API_KEY=AIzaSyArtDPXHYIZcaTAbjTZRPznlhe_eBbaNLE",
+          "0gis0/youtube-mcp-server"
+        ]
+
+
+  title_generator:
+    model: title_generator_model
+    description: Genera 5 propuestas de títulos con emojis basados en la investigación.
+    instruction: |
+      Recibes:
+      - La DESCRIPCIÓN COMPLETA del contenido (del coordinador).
+      - Los TÉRMINOS CLAVE y los TÍTULOS ENCONTRADOS proporcionados por el investigador.
+
+      Si no se incluyen títulos encontrados, genera propuestas basándote únicamente en los términos clave y la descripción.
+
+      Crea exactamente 5 propuestas de título en español que cumplan todas estas condiciones:
+      - Incluyen los términos clave principales.
+      - Se inspiran en los títulos encontrados (si existen).
+      - No superan los 60 caracteres (espacios y emojis incluidos).
+      - Contienen emojis relevantes (uno o dos).
+      - Son atractivos y claros.
+      - Reflejan fielmente el contenido descrito.
+      - No utilizan nombres de plataformas ni expresiones de búsqueda.
+
+      Devuelve la lista en el siguiente formato, sin explicaciones adicionales:
+      1. [Título con emojis]
+      2. [Título con emojis]
+      3. [Título con emojis]
+      4. [Título con emojis]
+      5. [Título con emojis]
+
+
+# Usando OpenAI
+# models:
+#   root_model:
+#     provider: openai
+#     model: gpt-5-mini
+#   investigator_model:
+#     provider: openai
+#     model: gpt-5
+#   title_generator_model:
+#     provider: openai
+#     model: gpt-5
+
+
+# Usando Azure AI Foundry
+models:
+  root_model:
+    provider: azure
+    model: gpt-5-mini
+    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    token_key: AZURE_AI_FOUNDRY_API_KEY
+    provider_opts:
+      azure_api_version: 2024-12-01-preview
+  investigator_model:
+    provider: azure
+    model: gpt-5-2
+    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    token_key: AZURE_AI_FOUNDRY_API_KEY
+    provider_opts:
+      azure_api_version: 2024-12-01-preview
+  title_generator_model:
+    provider: azure
+    model: gpt-5-2
+    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    token_key: AZURE_AI_FOUNDRY_API_KEY
+    provider_opts:
+      azure_api_version: 2024-05-01-preview
+
+
+# Alternativa con GitHub Models
+# models:
+#   root_model:
+#     provider: openai
+#     model: openai/gpt-5
+#     base_url: https://models.github.ai/inference
+#   investigator_model:
+#     provider: openai
+#     model: openai/gpt-4o
+#     base_url: https://models.github.ai/inference
+#   title_generator_model:
+#     provider: openai
+#     model: openai/gpt-4o
+#     base_url: https://models.github.ai/inference
+
+
+# Alternativa con Ollama
+# models:
+#   root_model:
+#     provider: openai
+#     model: gpt-oss
+#     base_url: http://localhost:11434/v1
+#   investigator_model:
+#     provider: openai
+#     model: llama3.2
+#     base_url: http://localhost:11434/v1
+#   title_generator_model:
+#     provider: openai
+#     model: qwen2.5:7b-instruct
+#     base_url: http://localhost:11434/v1

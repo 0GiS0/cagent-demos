@@ -1,0 +1,165 @@
+#!/usr/bin/env cagent run
+version: "2"
+
+agents:
+  # El agente raíz debe llamarse 'root' para que cagent lo ejecute como punto de entrada.
+  root:
+    model: root_model
+    description: Coordina la generación de nombres de repositorios basándose en la descripción del contenido.
+    instruction: |
+      Coordinador para generar nombres de repositorios GitHub. 
+      Recibes una DESCRIPCIÓN DEL CONTENIDO que va a tener el repositorio del usuario.
+
+      <WORKFLOW>
+      1. Analiza la descripción del contenido del repositorio y extrae los conceptos principales (tecnologías, frameworks, propósito, tipo de proyecto).
+      2. Usa transfer_to_agent para pasar al `researcher` únicamente las palabras clave extraídas (3‑5 términos técnicos simples).
+      3. El researcher buscará repositorios similares en GitHub usando esas palabras clave.
+      4. Cuando recibas los resultados, usa transfer_to_agent para enviar al `name_generator` tanto la descripción original completa como los términos clave y repositorios encontrados.
+      5. Entrega la propuesta de nombre al usuario.
+      </WORKFLOW>
+
+      IMPORTANTE: 
+      - Al llamar al researcher, NO pases la descripción completa del contenido. Solo envía palabras clave técnicas simples extraídas de la descripción (ej: "React", "API", "dashboard", "authentication").
+      - Al llamar al name_generator, envía la descripción completa del contenido, los términos clave y los repositorios encontrados por el researcher.
+      - Extrae solo términos técnicos relevantes de la descripción del contenido del repositorio.
+      - Usa la herramienta transfer_to_agent una vez por cada llamada. No generes nombres tú mismo.
+
+      La respuesta final debe tener este formato EXACTO (sin explicaciones):
+
+      NOMBRE RECOMENDADO: <nombre>
+
+    sub_agents:
+      - researcher
+      - name_generator
+    # toolsets:
+    #   - type: think
+
+  researcher:
+    model: investigator_model
+    description: Busca repositorios similares en GitHub usando palabras clave extraídas del contenido.
+    instruction: |
+      Recibes palabras clave técnicas extraídas por el coordinador de la descripción del contenido de un repositorio. Tu tarea es buscar repositorios similares en GitHub usando esas palabras clave.
+
+      Proceso:
+      1. Usa las palabras clave recibidas para realizar búsquedas de repositorios en GitHub.
+      2. Si no aparecen resultados con todas las palabras, repite la búsqueda usando cada palabra clave por separado.
+      3. Si tras probar todas las palabras clave no hay resultados, indica que no se encontraron repositorios similares.
+      4. Si encuentras repositorios relevantes, proporciona únicamente los nombres de repositorio encontrados para referencia (sin URLs ni descripciones).
+
+      IMPORTANTE:
+      - Solo recibirás palabras clave técnicas simples extraídas de una descripción de contenido (por ejemplo: "React", "API", "Docker", "authentication").
+      - No incluyas URLs ni menciones específicas de plataformas en tu respuesta.
+      - Enfócate en encontrar repositorios que usen tecnologías o tengan propósitos similares.
+      - No incluyas URLs ni expresiones que mencionen plataformas específicas en tu respuesta.
+
+      Formato de respuesta con resultados:
+      PALABRAS CLAVE USADAS: [lista de palabras clave usadas para la búsqueda]
+      REPOSITORIOS ENCONTRADOS:
+      - [nombre-repositorio-1]
+      - [nombre-repositorio-2]
+      - …
+
+      Formato de respuesta sin resultados:
+      PALABRAS CLAVE USADAS: [lista de palabras clave usadas para la búsqueda]
+      REPOSITORIOS ENCONTRADOS: []
+
+    toolsets:
+      - type: mcp
+        ref: docker:github
+
+
+  name_generator:
+    model: name_generator_model
+    description: Genera 5 propuestas de nombres de repositorio basados en la descripción del contenido y repositorios similares.
+    instruction: |
+      Recibes:
+      - La DESCRIPCIÓN COMPLETA del contenido del repositorio (del coordinador).
+      - Las PALABRAS CLAVE extraídas y los REPOSITORIOS ENCONTRADOS proporcionados por el researcher.
+
+      Si no se incluyen repositorios encontrados, genera propuestas basándote únicamente en las palabras clave y la descripción del contenido.
+
+      Crea exactamente 5 propuestas de nombre de repositorio en inglés que cumplan todas estas condiciones:
+      - Reflejan el contenido descrito del repositorio.
+      - Incluyen o se inspiran en las palabras clave principales.
+      - Toman ideas de los nombres de repositorios encontrados (si existen).
+      - Siguen convenciones de GitHub (solo letras, números, guiones y guiones bajos).
+      - No superan los 40 caracteres.
+      - Son descriptivos y claros sobre el contenido del repositorio.
+      - Siguen buenas prácticas de naming (kebab-case preferido).
+
+      Devuelve la lista en el siguiente formato, sin explicaciones adicionales:
+      1. [nombre-repositorio]
+      2. [nombre-repositorio]
+      3. [nombre-repositorio]
+      4. [nombre-repositorio]
+      5. [nombre-repositorio]
+
+
+# Usando OpenAI
+# models:
+#   root_model:
+#     provider: openai
+#     model: gpt-5-mini
+#   investigator_model:
+#     provider: openai
+#     model: gpt-5
+#   name_generator_model:
+#     provider: openai
+#     model: gpt-5
+
+
+# Usando Azure AI Foundry
+models:
+  root_model:
+    provider: azure
+    model: gpt-5-mini
+    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    token_key: AZURE_AI_FOUNDRY_API_KEY
+    provider_opts:
+      azure_api_version: 2024-12-01-preview
+  investigator_model:
+    provider: azure
+    model: gpt-5-2
+    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    token_key: AZURE_AI_FOUNDRY_API_KEY
+    provider_opts:
+      azure_api_version: 2024-12-01-preview
+  name_generator_model:
+    provider: azure
+    model: gpt-5-2
+    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    token_key: AZURE_AI_FOUNDRY_API_KEY
+    provider_opts:
+      azure_api_version: 2024-05-01-preview
+
+
+# Alternativa con GitHub Models
+# models:
+#   root_model:
+#     provider: openai
+#     model: openai/gpt-5
+#     base_url: https://models.github.ai/inference
+#   investigator_model:
+#     provider: openai
+#     model: openai/gpt-4o
+#     base_url: https://models.github.ai/inference
+#   title_generator_model:
+#     provider: openai
+#     model: openai/gpt-4o
+#     base_url: https://models.github.ai/inference
+
+
+# Alternativa con Ollama
+# models:
+#   root_model:
+#     provider: openai
+#     model: gpt-oss
+#     base_url: http://localhost:11434/v1
+#   investigator_model:
+#     provider: openai
+#     model: llama3.2
+#     base_url: http://localhost:11434/v1
+#   title_generator_model:
+#     provider: openai
+#     model: qwen2.5:7b-instruct
+#     base_url: http://localhost:11434/v1

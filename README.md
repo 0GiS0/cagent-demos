@@ -9,83 +9,26 @@ Hola developer 👋🏻! Este repositorio contiene ejemplos prácticos de config
 
 Lo chulo es que esta herramienta a día de hoy ya permite usar diferentes modelos de diferentes proveedores, integración con MCP Servers e incluso la posibilidad de crear multiples agentes que colaboran entre sí para resolver tareas complejas.
 
-## 📋 Ejemplos Disponibles
-
-### 📁 `00-basic.yml` - Agente Básico
-**Propósito**: Configuración básica de un solo agente especializado en generar títulos de YouTube.
-
-**Características**:
-- ✅ Un solo agente (`root`) con instrucciones específicas
-- ✅ Usa GitHub Models (GPT-5) como proveedor
-- ✅ Optimizado para generar 5 títulos atractivos con emojis
-- ✅ Límite de 70 caracteres por título
-
-**Caso de uso**: Ideal para empezar con `cagent` y entender la configuración básica.
-
----
-
-### 📁 `01-free-demo.yml` - Agente con Ollama
-**Propósito**: Demostración usando modelos locales gratuitos con Ollama.
-
-**Características**:
-- ✅ Modelo principal: Ollama local (`gpt-oss`)
-- ✅ Alternativa configurada: GitHub Models
-- ✅ Misma funcionalidad que el ejemplo básico
-- ✅ Completamente gratis al usar modelos locales
-
-**Caso de uso**: Cuando quieres usar modelos locales sin depender de APIs externas.
-
----
-
-### 📁 `02-mcp-demo.yml` - Integración con MCP Servers
-**Propósito**: Demostración avanzada de integración con Model Context Protocol (MCP) servers.
-
-**Características**:
-- ✅ **MCP Servers remotos**: GitHub, Notion, Fetch, Time
-- ✅ **Herramientas built-in**: Sistema de archivos, shell
-- ✅ Configuración con Docker MCP Gateway
-- ✅ Timezone configurado para Europa/Madrid
-
-**Caso de uso**: Cuando necesitas que tu agente interactúe con servicios externos como GitHub, Notion, etc.
-
-Para ejecutar este ejemplo, asegúrate de tener el MCP Gateway corriendo localmente:
-
-
-```bash
-./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log
-```
-
----
-
-### 📁 `03-multi-agent.yml` - Sistema Multi-Agente
-**Propósito**: Ejemplo complejo de coordinación entre múltiples agentes especializados.
-
-**Arquitectura**:
-```
-root (coordinador)
-├── investigador → Busca videos relacionados en YouTube
-└── generador_titulo → Crea títulos basados en la investigación
-```
-
-**Características**:
-- ✅ **3 agentes especializados** con roles específicos
-- ✅ **Workflow coordinado**: investigación → generación → entrega
-- ✅ **Integración YouTube**: Búsqueda automática de videos relacionados
-- ✅ **Múltiples proveedores**: GitHub Models, Ollama (comentado)
-
-**Caso de uso**: Tareas complejas que requieren especialización y coordinación entre agentes.
-
----
 
 ## 🚀 Configuración Inicial
 
 ### 1. Descargar `cagent`
 
 ```bash
+# Cambia a "linux-amd64" o "windows-amd64" según tu SO
+PLATFORM="darwin-amd64"
+
+# Recuperar la última versión de cagent
 URL_TO_DOWNLOAD=$(curl -fsSL https://api.github.com/repos/docker/cagent/releases/latest \
-  | jq -r '.assets[] | select(.name | test("cagent-darwin-amd64")) | .browser_download_url')
+  | jq -r ".assets[] | select(.name | test(\"cagent-$PLATFORM\")) | .browser_download_url")
+
+# Descargar
 curl -fL "$URL_TO_DOWNLOAD" -o cagent
+
+# Hacer el archivo ejecutable
 chmod +x cagent
+
+# Verificar instalación
 ./cagent version
 ```
 
@@ -103,74 +46,95 @@ Permisos requeridos: `models:read`
 OPENAI_API_KEY=ghp_tu_token_aqui
 ```
 
----
+## 📋 Ejemplos Disponibles
 
-## 🎯 Guía de Ejecución
 
-### Ejemplo Básico (GitHub Models)
-```bash
-./cagent run 00-basic.yml --env-from-file .env --debug --log-file basic.log
-```
-**💡 Perfecto para**: Primeros pasos y pruebas rápidas
-
-### Ejemplo con Ollama (Gratis)
-```bash
-./cagent run 01-free-demo.yml --env-from-file .env --debug --log-file ollama.log
-```
-**💡 Perfecto para**: Desarrollo local sin costos
-
-### Ejemplo con MCP Servers (Avanzado)
-```bash
-./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log
-```
-**💡 Perfecto para**: Integración con servicios externos
-
-### Ejemplo Multi-Agente (Complejo)
-```bash
-./cagent run 03-multi-agent.yml --env-from-file .env --debug --log-file multi-agent.log --yolo
-```
-**💡 Perfecto para**: Workflows complejos y coordinación de tareas
-
----
-
-## 📊 Comparativa de Ejemplos
-
-| Ejemplo | Complejidad | Agentes | Herramientas | Costo | Caso de Uso |
-|---------|-------------|---------|--------------|-------|-------------|
-| `00-basic.yml` | ⭐ Básico | 1 | Ninguna | 💰 Bajo | Aprendizaje inicial |
-| `01-free-demo.yml` | ⭐ Básico | 1 | Ninguna | 🆓 Gratis | Desarrollo local |
-| `02-mcp-demo.yml` | ⭐⭐⭐ Avanzado | 1 | MCP, FS, Shell | 💰 Medio | Integración externa |
-| `03-multi-agent.yml` | ⭐⭐⭐⭐ Complejo | 3 | MCP, Think | 💰💰 Alto | Workflows complejos |
-
----
-
-## 🔧 Opciones de Línea de Comandos
-
-- `--env-from-file .env`: Carga variables de entorno desde archivo
-- `--debug`: Muestra información detallada de ejecución
-- `--log-file nombre.log`: Guarda logs en archivo específico
-- `--yolo`: Modo permisivo para ejecución experimental
-
-### Generador de Títulos de YouTube (Multi-agente en Español)
-
-Nuevo ejemplo: Un flujo de tres agentes que colaboran para generar el mejor título optimizado de YouTube en español a partir de una descripción del vídeo.
-
-Archivo: `03-multi-agent.yml`
-
-Roles:
-- `coordinador`: Orquesta el flujo, delega primero a investigación y luego a generación.
-- `investigador`: Usa un MCP (`mcp-youtube`) para buscar títulos existentes, detectar patrones, palabras clave y oportunidades.
-- `generador_titulo`: Propone entre 6 y 10 títulos optimizados (<=60 caracteres ideal) y selecciona uno recomendado con justificación.
-
-Ejecución:
-```bash
-./cagent run 03-multi-agent.yml --env-from-file .env --debug --log-file yt-titulos.log --yolo
-```
 
 Para probar, puedes usar esta descripción de ejemplo:
 
 ```text
 Esta es la descripción de mi vídeo: En este vídeo te voy a mostrar cómo usar cagent, una herramienta desarrollada por Docker, que te permite usando un único YAML crear agentes conversacionales que pueden usar múltiples modelos de lenguaje, herramientas y flujos de trabajo para automatizar tareas complejas. Veremos cómo instalar cagent, cómo crear un agente básico, utilizarlo con GitHub Models, Ollama y MCP Servers, y finalmente cómo crear un sistema multi-agente colaborativo.
+```
+
+
+A continuación cada ejemplo incluye su comando de ejecución directo (copiar/pegar). Todos asumen que ya creaste tu archivo `.env` y que `./cagent` es ejecutable.
+
+### 📁 1) `00-basic.yml` – Agente Básico
+
+**Qué hace**: Un único agente que genera 5 títulos de YouTube con emojis (≤70 caracteres) usando OpenAI.
+Ideal para: Primer contacto con la sintaxis de `cagent`.
+
+Para ejecutarlo: 
+
+```bash
+./cagent run 00-basic.yml --env-from-file .env --debug --log-file basic.log
+```
+
+---
+
+### 📁 2) `01-free-demo.yml` – Agente con Modelo Local (Ollama/GitHub Models)
+
+**Qué hace**: Igual que el básico pero usando un modelo local (`gpt-oss`) vía Ollama (sin coste) o GitHub Models si no tienes un ordenador potente.
+Ideal para: Desarrollo gratuito sin depender de la nube o si no tienes hardware potente.
+
+Para ejecutarlo:
+
+```bash
+./cagent run 01-free-demo.yml --env-from-file .env --debug --log-file ollama.log
+```
+
+---
+
+### 📁 3) `02-mcp-demo.yml` – Integración con MCP Servers
+
+**Qué hace**: Un agente que puede usar servidores MCP (GitHub, Notion, Fetch, Time) + herramientas locales (filesystem, shell). Demuestra cómo orquestar capacidades externas.
+Requisitos: Tener Docker y, si usas gateway MCP, que esté disponible. Configura variables como `YOUTUBE_API_KEY` si usas el server de YouTube.
+Ideal para: Integrar APIs/servicios y probar toolsets.
+
+
+Para ejecutarlo:
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log
+```
+
+---
+
+### 📁 4) `03-multi-agent-youtube.yml` – Sistema Multi‑Agente (Generador de Títulos YouTube)
+
+**Qué hace**: 3 agentes (coordinador → researcher → title_generator) colaboran para producir un título recomendado basado en términos clave + investigación de YouTube (vía MCP `youtube-mcp-server`).
+Ideal para: Ver paso a paso delegación y transferencia entre agentes.
+
+>[!NOTE]
+>Necesitas `YOUTUBE_API_KEY` en el entorno si usas el server de YouTube.
+
+Para ejecutarlo (flujo completo):
+```bash
+./cagent run 03-multi-agent-youtube.yml --env-from-file .env --debug --log-file multi-agent.log --yolo
+```
+
+Ejecutar solo un agente (depuración del investigador):
+
+```bash
+./cagent run 03-multi-agent-youtube.yml --env-from-file .env --debug --log-file researcher.log --agent researcher
+```
+
+
+---
+
+### 📁 5) `04-multi-agent-github.yml` – Multi‑Agente para Naming de Repositorios
+
+**Qué hace**: 3 agentes generan 5 nombres de repositorio (en inglés, kebab-case) a partir de una descripción y repos similares obtenidos vía MCP GitHub.
+Ideal para: Inspirarte en naming y aprender a integrar búsqueda en GitHub como parte del flujo.
+
+Para ejecutarlo (flujo completo):
+```bash
+./cagent run 04-multi-agent-github.yml --env-from-file .env --debug --log-file repo-names.log --yolo
+```
+
+Ejecutar solo el investigador (GitHub search):
+```bash
+./cagent run 04-multi-agent-github.yml --env-from-file .env --debug --log-file researcher.log --agent researcher
 ```
 
 
