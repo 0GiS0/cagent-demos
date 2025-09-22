@@ -104,6 +104,16 @@ Para probar los diferentes MCP servers puedes hacer preguntas como:
 ./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "Quiero buscar vídeos sobre MCP Servers en YouTube en español" 
 ```
 
+Para probar Notion
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "Busca en mi DB_TODO de notion todas las tareas que contengan ‘Cargar’ y muéstrame título + estado."
+
+
+./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "A qué tienes acceso de mi cuenta de Notion"
+```
+Busca en mi DB_TODO de notion todas las tareas que contengan ‘Cargar’ y muéstrame título + estado.
+
 
 ```bash
 ./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "Quiero buscar vídeos sobre MCP Servers en YouTube en español" 
