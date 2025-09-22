@@ -59,7 +59,7 @@ agents:
           "run",
           "-i",
           "--rm",
-          "-e", "YOUTUBE_API_KEY=AIzaSyBO8VRxutoqVDYqKQkAl6797xme3c-IVUk",
+          "-e", "YOUTUBE_API_KEY=${YOUTUBE_API_KEY}",
           "0gis0/youtube-mcp-server"
         ]
 

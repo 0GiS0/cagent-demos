@@ -48,6 +48,13 @@ Lo chulo es que esta herramienta a día de hoy ya permite usar diferentes modelo
 
 **Caso de uso**: Cuando necesitas que tu agente interactúe con servicios externos como GitHub, Notion, etc.
 
+Para ejecutar este ejemplo, asegúrate de tener el MCP Gateway corriendo localmente:
+
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log
+```
+
 ---
 
 ### 📁 `03-multi-agent.yml` - Sistema Multi-Agente

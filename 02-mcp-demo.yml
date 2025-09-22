@@ -10,6 +10,17 @@ agents:
       You are an AI assistant that can use various tools to help users with their requests.
     toolsets:
 
+      # Local MCP Servers      
+      - type: mcp
+        command: "docker"
+        args: [
+          "run",
+          "-i",
+          "--rm",
+          "-e", "YOUTUBE_API_KEY=<YOUTUBE_API_KEY>",
+          "0gis0/youtube-mcp-server"
+        ]
+
       # Remote MCP Servers
       # - type: mcp
       #   remote:
