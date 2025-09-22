@@ -1,5 +1,5 @@
 
-# Demos Jueves de Quack: 🤖`cagent`🤖 con GitHub Models 
+# 🎮 Jugando con 🤖`cagent`🤖 
 
 Hola developer 👋🏻! Este repositorio contiene ejemplos prácticos de configuración de 🤖`cagent`🤖.
 
