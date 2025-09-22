@@ -3,11 +3,11 @@ version: "2"
 
 agents:
   root:
-    # model: ollama_model
-    model: my_github_model
+    model: llm_model
     description: Assistant to test MCP servers
     instruction: |
       You are an AI assistant that can use various tools to help users with their requests.
+
     toolsets:
 
       # Local MCP Servers      
@@ -17,7 +17,7 @@ agents:
           "run",
           "-i",
           "--rm",
-          "-e", "YOUTUBE_API_KEY=<YOUTUBE_API_KEY>",
+          "-e", "YOUTUBE_API_KEY=AIzaSyArtDPXHYIZcaTAbjTZRPznlhe_eBbaNLE",
           "0gis0/youtube-mcp-server"
         ]
 
@@ -54,11 +54,11 @@ agents:
       # - type: todo
 
 models:
-  ollama_model:
-    provider: openai
-    model: gemma3:1b
-    base_url: http://localhost:11434/v1
-  my_github_model:
+  # llm_model:
+  #   provider: openai
+  #   model: llama3.2
+  #   base_url: http://localhost:11434/v1
+  llm_model:
     provider: openai
     model: openai/gpt-4.1
     base_url: https://models.github.ai/inference

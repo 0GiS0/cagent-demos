@@ -98,6 +98,45 @@ Para ejecutarlo:
 ./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log
 ```
 
+Para probar los diferentes MCP servers puedes hacer preguntas como:
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "Quiero buscar vídeos sobre MCP Servers en YouTube en español" 
+```
+
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "Quiero buscar vídeos sobre MCP Servers en YouTube en español" 
+```
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log "¿puedes contarme algo de mi repo 0gis0/cagent-demos?"
+```
+
+Usar el MCP Server de GitHub para poder buscar en tu repo (en este caso todavía estaba privado):
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log "¿puedes contarme algo de mi repo 0gis0/cagent-demos?"
+```
+
+Para usar la tool `filesystem` y `shell` (asegúrate de tener archivos en el directorio actual):
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log "¿Qué puedes ver en mi directorio actual?"
+```
+
+Para usar la tool fetch (asegúrate de tener conexión a internet):
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log "¿Puedes buscar echar un vistazo a esta URL: https://www.returngis.net/2025/09/como-usar-los-modelos-de-ollama-con-cagent/ y darme un resumen?"
+```
+
+Para usar la tool `shell` y eliminar archivos `.log` generados:
+
+```bash
+./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log "Puedes eliminar los .log que tengo generados en el directorio actual?"
+```
+
 ---
 
 ### 📁 4) `03-multi-agent-youtube.yml` – Sistema Multi‑Agente (Generador de Títulos YouTube)
