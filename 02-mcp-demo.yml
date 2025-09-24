@@ -17,7 +17,7 @@ agents:
           "run",
           "-i",
           "--rm",
-          "-e", "YOUTUBE_API_KEY=AIzaSyArtDPXHYIZcaTAbjTZRPznlhe_eBbaNLE",
+          "-e", "YOUTUBE_API_KEY=<TU_API_KEY>",
           "0gis0/youtube-mcp-server"
         ]
 
@@ -27,18 +27,18 @@ agents:
       #     url: https://mcp.notion.com/sse
       #     transport_type: sse
 
-      # - type: mcp
-      #   remote:
-      #     url: https://api.githubcopilot.com/mcp/
-      #     transport_type: streameable
+      - type: mcp
+        remote:
+          url: https://api.githubcopilot.com/mcp/
+          transport_type: streameable
       - type: mcp
         remote:
           url: https://gitmcp.io/moby/moby
           transport_type: streamable
 
       # Using Docker MCP Gateway
-      - type: mcp
-        ref: docker:github
+      # - type: mcp
+      #   ref: docker:github
       - type: mcp
         ref: docker:notion
       - type: mcp

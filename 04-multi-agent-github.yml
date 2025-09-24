@@ -113,21 +113,21 @@ models:
   root_model:
     provider: azure
     model: gpt-5-mini
-    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    base_url: https://<YOUR_AZURE_DOMAIN_NAME>.cognitiveservices.azure.com
     token_key: AZURE_AI_FOUNDRY_API_KEY
     provider_opts:
       azure_api_version: 2024-12-01-preview
   investigator_model:
     provider: azure
     model: gpt-5-2
-    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    base_url: https://<YOUR_AZURE_DOMAIN_NAME>.cognitiveservices.azure.com
     token_key: AZURE_AI_FOUNDRY_API_KEY
     provider_opts:
       azure_api_version: 2024-12-01-preview
   name_generator_model:
     provider: azure
     model: gpt-5-2
-    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    base_url: https://<YOUR_AZURE_DOMAIN_NAME>.cognitiveservices.azure.com
     token_key: AZURE_AI_FOUNDRY_API_KEY
     provider_opts:
       azure_api_version: 2024-05-01-preview

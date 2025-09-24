@@ -1,7 +1,21 @@
 
 # 🎮 Jugando con 🤖`cagent`🤖 
 
-Hola developer 👋🏻! Este repositorio contiene ejemplos prácticos de configuración de 🤖`cagent`🤖.
+<div align="center">
+
+[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UC140iBrEZbOtvxWsJ-Tb0lQ?style=for-the-badge&logo=youtube&logoColor=white&color=red)](https://www.youtube.com/c/GiselaTorres?sub_confirmation=1)
+[![GitHub followers](https://img.shields.io/github/followers/0GiS0?style=for-the-badge&logo=github&logoColor=white)](https://github.com/0GiS0)
+[![LinkedIn Follow](https://img.shields.io/badge/LinkedIn-Sígueme-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/giselatorresbuitrago/)
+[![X Follow](https://img.shields.io/badge/X-Sígueme-black?style=for-the-badge&logo=x&logoColor=white)](https://twitter.com/0GiS0)
+
+</div>
+
+Hola developer 👋🏻! Este repositorio contiene ejemplos prácticos de configuración de 🤖`cagent`🤖 que mostré en mi vídeo:
+
+ <a href="https://www.youtube.com/watch?v=epBiyhp57bw" target="_blank">
+                <img src="https://img.youtube.com/vi/epBiyhp57bw/maxresdefault.jpg" alt="Construyendo chats con IA 🤖 OpenAI SDK vs LangChain explicado fácil 🎯 | Cap. 11" width="100%" />
+            <br/>
+
 
 ## ¿Pero qué es `cagent`?
 
@@ -181,10 +195,19 @@ Para ejecutarlo (flujo completo):
 ./cagent run 04-multi-agent-github.yml --env-from-file .env --debug --log-file repo-names.log --yolo
 ```
 
-Ejecutar solo el investigador (GitHub search):
+Ejecutar SOLO el investigador (GitHub search):
 ```bash
 ./cagent run 04-multi-agent-github.yml --env-from-file .env --debug --log-file researcher.log --agent researcher
 ```
+
+### 🎯 ¿Te ha resultado útil este contenido?
+
+**¡La mejor forma de agradecerlo es con una suscripción!** 
+
+Cada nuevo suscriptor me motiva a seguir creando contenido de calidad y mantener estos repositorios actualizados. 
+
+[![Suscríbete Ahora](https://img.shields.io/badge/🔔%20SUSCRÍBETE%20AHORA-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/c/GiselaTorres?sub_confirmation=1)
+
 
 
 ¡Nos vemos 👋🏻!

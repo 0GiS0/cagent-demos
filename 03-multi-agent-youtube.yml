@@ -12,8 +12,8 @@ agents:
 
       <WORKFLOW>
       1. Analiza la descripción y extrae solo los conceptos principales (tecnologías, temas, objetivos).
-      2. Usa transfer_to_agent para pasar al `investigador` únicamente los términos clave extraídos (3‑5 palabras neutras). No incluyas la raíz de ninguna ruta ni información irrelevante.
-      3. Cuando recibas los resultados, usa transfer_to_agent para enviar al `generador_titulo` los términos clave y la descripción original completa.
+      2. Usa transfer_to_agent para pasar al `researcher` únicamente los términos clave extraídos (3‑5 palabras neutras). No incluyas la raíz de ninguna ruta ni información irrelevante.
+      3. Cuando recibas los resultados, usa transfer_to_agent para enviar al `title_generator` los términos clave y la descripción original completa.
       4. Entrega la propuesta de título al usuario.
       </WORKFLOW>
 
@@ -68,7 +68,7 @@ agents:
           "run",
           "-i",
           "--rm",
-          "-e", "YOUTUBE_API_KEY=AIzaSyArtDPXHYIZcaTAbjTZRPznlhe_eBbaNLE",
+          "-e", "YOUTUBE_API_KEY=<TU_API_KEY>",
           "0gis0/youtube-mcp-server"
         ]
 
@@ -118,21 +118,21 @@ models:
   root_model:
     provider: azure
     model: gpt-5-mini
-    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    base_url: https://<YOUR_AZURE_DOMAIN_NAME>.cognitiveservices.azure.com
     token_key: AZURE_AI_FOUNDRY_API_KEY
     provider_opts:
       azure_api_version: 2024-12-01-preview
   investigator_model:
     provider: azure
     model: gpt-5-2
-    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    base_url: https://<YOUR_AZURE_DOMAIN_NAME>.cognitiveservices.azure.com
     token_key: AZURE_AI_FOUNDRY_API_KEY
     provider_opts:
       azure_api_version: 2024-12-01-preview
   title_generator_model:
     provider: azure
     model: gpt-5-2
-    base_url: https://admin-mfuv34jk-eastus2.cognitiveservices.azure.com
+    base_url: https://<YOUR_AZURE_DOMAIN_NAME>.cognitiveservices.azure.com
     token_key: AZURE_AI_FOUNDRY_API_KEY
     provider_opts:
       azure_api_version: 2024-05-01-preview

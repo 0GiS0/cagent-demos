@@ -3,7 +3,7 @@ version: "2"
 
 agents:
   root:
-    model: ollama_model
+    model: my_github_model
     description: Asistente para generar títulos de Youtube
     instruction: |
       Eres un asistente especializado en crear títulos optimizados para YouTube 🎬.
@@ -21,7 +21,7 @@ agents:
 models:
   ollama_model:
     provider: openai
-    model: gpt-oss
+    model: llama3.2
     base_url: http://localhost:11434/v1
 
   my_github_model:
