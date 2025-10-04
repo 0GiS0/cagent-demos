@@ -21,7 +21,7 @@ agents:
             "-i",
             "--rm",
             "-e",
-            "YOUTUBE_API_KEY=AIzaSyCCHN3J1aFgJJWCrXrmb0yD6hqGyYydAPM",
+            "YOUTUBE_API_KEY=${YOUTUBE_API_KEY}",
             "0gis0/youtube-mcp-server",
           ]
 
@@ -38,8 +38,8 @@ agents:
       
 
       # Using Docker MCP Gateway
-      # - type: mcp
-      #   ref: docker:github      
+      - type: mcp
+        ref: docker:github      
       # - type: mcp
       #   ref: docker:fetch
       - type: mcp

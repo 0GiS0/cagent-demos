@@ -126,7 +126,7 @@ Para ejecutarlo:
 Para probar los diferentes MCP servers puedes hacer preguntas como:
 
 ```bash
-./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log "Quiero buscar vídeos sobre n8n en YouTube en español de este mes" 
+./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log "Quiero buscar los últimos vídeos de Jueves de Quack del canal de GitHub con un resumen de qué trata cada vídeo" 
 ```
 
 ```bash
@@ -136,7 +136,7 @@ Para probar los diferentes MCP servers puedes hacer preguntas como:
 Usar el MCP Server de GitHub para poder buscar en tu repo (en este caso todavía estaba privado):
 
 ```bash
-./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log --tui=false "¿puedes contarme algo de mi repo 0gis0/cagent-demos?"
+./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log "¿puedes contarme algo de mi repo 0gis0/cagent-demos?"
 ```
 
 Para usar la tool `filesystem` y `shell` (asegúrate de tener archivos en el directorio actual):
