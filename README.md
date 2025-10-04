@@ -1,5 +1,5 @@
 
-# 🎮 Jugando con 🤖`cagent`🤖 
+# Jueves de Quack 🦆 con 🤖`cagent`🤖 
 
 <div align="center">
 
@@ -10,7 +10,7 @@
 
 </div>
 
-Hola developer 👋🏻! Este repositorio contiene ejemplos prácticos de configuración de 🤖`cagent`🤖 que mostré en mi vídeo:
+Hola developer 👋🏻! Este repositorio contiene las demos que mostré durante el evento Jueves de Quack 🦆 con 🤖`cagent`🤖.
 
  <a href="https://www.youtube.com/watch?v=epBiyhp57bw" target="_blank">
                 <img src="https://img.youtube.com/vi/epBiyhp57bw/maxresdefault.jpg" alt="Construyendo chats con IA 🤖 OpenAI SDK vs LangChain explicado fácil 🎯 | Cap. 11" width="100%" />
@@ -70,6 +70,17 @@ Para probar, puedes usar esta descripción de ejemplo:
 Esta es la descripción de mi vídeo: En este vídeo te voy a mostrar cómo usar cagent, una herramienta desarrollada por Docker, que te permite usando un único YAML crear agentes conversacionales que pueden usar múltiples modelos de lenguaje, herramientas y flujos de trabajo para automatizar tareas complejas. Veremos cómo instalar cagent, cómo crear un agente básico, utilizarlo con GitHub Models, Ollama y MCP Servers, y finalmente cómo crear un sistema multi-agente colaborativo.
 ```
 
+###  📁 0) Agente desde cero con `new`
+
+Puedes crear un nuevo agente básico usando el comando `new` de `cagent`:
+
+```bash
+./cagent new --model openai/gpt-4.1 --max-tokens=32768
+```
+
+>[!NOTE]
+>Si por defecto no especificas el proveedor intentará usar Docker Model Runner.
+
 
 A continuación cada ejemplo incluye su comando de ejecución directo (copiar/pegar). Todos asumen que ya creaste tu archivo `.env` y que `./cagent` es ejecutable.
 
@@ -94,7 +105,7 @@ Ideal para: Desarrollo gratuito sin depender de la nube o si no tienes hardware 
 Para ejecutarlo:
 
 ```bash
-./cagent run 01-free-demo.yml --env-from-file .env --debug --log-file ollama.log
+./cagent run 01-free-demo.yml --env-from-file .env --debug --log-file free.log
 ```
 
 ---
@@ -115,22 +126,7 @@ Para ejecutarlo:
 Para probar los diferentes MCP servers puedes hacer preguntas como:
 
 ```bash
-./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "Quiero buscar vídeos sobre MCP Servers en YouTube en español" 
-```
-
-Para probar Notion
-
-```bash
-./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "Busca en mi DB_TODO de notion todas las tareas que contengan ‘Cargar’ y muéstrame título + estado."
-
-
-./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "A qué tienes acceso de mi cuenta de Notion"
-```
-Busca en mi DB_TODO de notion todas las tareas que contengan ‘Cargar’ y muéstrame título + estado.
-
-
-```bash
-./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log --yolo --tui=false "Quiero buscar vídeos sobre MCP Servers en YouTube en español" 
+./cagent run 02-mcp-demo.yml --env-from-file .env --log-file mcp.log "Quiero buscar vídeos sobre n8n en YouTube en español de este mes" 
 ```
 
 ```bash
@@ -140,7 +136,7 @@ Busca en mi DB_TODO de notion todas las tareas que contengan ‘Cargar’ y mué
 Usar el MCP Server de GitHub para poder buscar en tu repo (en este caso todavía estaba privado):
 
 ```bash
-./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log "¿puedes contarme algo de mi repo 0gis0/cagent-demos?"
+./cagent run 02-mcp-demo.yml --env-from-file .env --debug --log-file mcp.log --tui=false "¿puedes contarme algo de mi repo 0gis0/cagent-demos?"
 ```
 
 Para usar la tool `filesystem` y `shell` (asegúrate de tener archivos en el directorio actual):

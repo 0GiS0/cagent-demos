@@ -8,18 +8,22 @@ agents:
     instruction: |
       You are an AI assistant that can use various tools to help users with their requests.
 
-    toolsets:
+    add_date: true
+    add_environment_info: false
 
-      # Local MCP Servers      
+    toolsets:
+      # Local MCP Servers
       - type: mcp
         command: "docker"
-        args: [
-          "run",
-          "-i",
-          "--rm",
-          "-e", "YOUTUBE_API_KEY=<TU_API_KEY>",
-          "0gis0/youtube-mcp-server"
-        ]
+        args:
+          [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "YOUTUBE_API_KEY=AIzaSyCCHN3J1aFgJJWCrXrmb0yD6hqGyYydAPM",
+            "0gis0/youtube-mcp-server",
+          ]
 
       # Remote MCP Servers
       # - type: mcp
@@ -27,26 +31,21 @@ agents:
       #     url: https://mcp.notion.com/sse
       #     transport_type: sse
 
-      - type: mcp
-        remote:
-          url: https://api.githubcopilot.com/mcp/
-          transport_type: streameable
-      - type: mcp
-        remote:
-          url: https://gitmcp.io/moby/moby
-          transport_type: streamable
+      # - type: mcp
+      #   remote:
+      #     url: https://api.githubcopilot.com/mcp/
+      #     transport_type: sse
+      
 
       # Using Docker MCP Gateway
       # - type: mcp
-      #   ref: docker:github
-      - type: mcp
-        ref: docker:notion
-      - type: mcp
-        ref: docker:fetch
+      #   ref: docker:github      
+      # - type: mcp
+      #   ref: docker:fetch
       - type: mcp
         ref: docker:time
         args: ["-e", "LOCAL_TIMEZONE=Europe/Madrid"]
-      
+
       # Built-in Tools
       - type: filesystem
       - type: shell
@@ -60,5 +59,6 @@ models:
   #   base_url: http://localhost:11434/v1
   llm_model:
     provider: openai
-    model: openai/gpt-4.1
+    model: openai/gpt-5   
+    # model: openai/gpt-4.1
     base_url: https://models.github.ai/inference

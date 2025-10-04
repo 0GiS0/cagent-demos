@@ -15,6 +15,7 @@ agents:
       - Reflejar fielmente el contenido del vídeo.
       - Usar un máximo de 70 caracteres.
       - Incluir siempre al menos un emoji para hacerlo más llamativo.
+      
       Si recibes una solicitud que no esté relacionada con la generación de títulos de YouTube, responde:
       "Lo siento, solo puedo ayudarte a generar títulos de videos de YouTube."
 
