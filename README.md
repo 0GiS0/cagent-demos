@@ -1,5 +1,5 @@
 
-# Jueves de Quack 🦆 con 🤖`cagent`🤖 
+# 🤖 Crea agentes de IA con solo un YAML ⚡ cagent explicado a fondo 🐙
 
 <div align="center">
 
@@ -10,7 +10,7 @@
 
 </div>
 
-Hola developer 👋🏻! Este repositorio contiene las demos que mostré durante el evento Jueves de Quack 🦆 con 🤖`cagent`🤖.
+Hola developer 👋🏻! Este repositorio contiene las demos que mostré durante el vídeo [🤖 Crea agentes de IA con solo un YAML ⚡ cagent explicado a fondo 🐙](https://youtu.be/epBiyhp57bw)
 
  <a href="https://www.youtube.com/watch?v=epBiyhp57bw" target="_blank">
                 <img src="https://img.youtube.com/vi/epBiyhp57bw/maxresdefault.jpg" alt="Construyendo chats con IA 🤖 OpenAI SDK vs LangChain explicado fácil 🎯 | Cap. 11" width="100%" />
